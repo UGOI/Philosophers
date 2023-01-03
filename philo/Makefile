@@ -39,5 +39,5 @@ fclean: clean
 .PHONY: re
 re:	fclean all
 
-debug_only: CFLAGS += -g
-debug_only: re
+debug: CFLAGS += -g
+debug: re
