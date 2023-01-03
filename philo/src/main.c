@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     }
     if (init_table(&table, &vars, argc, argv) == 0)
         return (1);
-    if (create_threads(&table) == 0)
+    if (create_threads(&table, &vars) == 0)
         return (1);
     return (0);
 }

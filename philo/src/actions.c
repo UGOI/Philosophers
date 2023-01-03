@@ -9,10 +9,10 @@ int p_eat(t_philo *philo)
 	print_status(philo, "has taken a fork", 0);
 	pthread_mutex_lock(philo->right_fork);
 	print_status(philo, "has taken a fork", 0);
-	pthread_mutex_lock(philo->meal_check);
+	pthread_mutex_lock(philo->vars->meal_check);
 	print_status(philo, "is eating", 0);
 	philo->last_meal = get_time();
-	pthread_mutex_unlock(philo->meal_check);
+	pthread_mutex_unlock(philo->vars->meal_check);
 	efficient_sleep(philo);
 	(philo->num_of_meals)++;
 	pthread_mutex_unlock(philo->left_fork);

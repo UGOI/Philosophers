@@ -21,6 +21,7 @@ typedef struct vars
     int deaths;
     long long start_time;
     t_rules rules;
+    pthread_mutex_t *meal_check;
 } t_vars;
 
 typedef struct philo
@@ -32,15 +33,12 @@ typedef struct philo
     long long last_meal;
     int num_of_meals;
     enum state state;
-    pthread_mutex_t *meal_check;
 } t_philo;
 
 
 typedef struct table
 {
     t_philo *philos;
-    pthread_mutex_t *meal_check;
-    t_rules rules;
     pthread_mutex_t *forks;
 } t_table;
 
@@ -48,7 +46,7 @@ typedef struct table
 int is_number(char *str);
 int is_all_number(char **argv);
 int check_input(int argc, char **argv);
-int create_threads(t_table *table);
+int create_threads(t_table *table, t_vars *vars);
 int	ft_atoi(const char *str);
 int get_time(void);
 int init_table(t_table *table, t_vars *vars, int argc, char **argv);
@@ -58,6 +56,6 @@ int p_think(t_philo *philo);
 int is_pdeath(t_philo *philo);
 void    print_status(t_philo *philo, char *status, int override);
 int p_die(t_philo *philo);
-void kill_p(t_table *table);
+void kill_p(t_table *table, t_vars *vars);
 void    efficient_sleep(t_philo *philo);
 #endif

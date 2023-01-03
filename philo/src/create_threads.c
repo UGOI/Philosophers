@@ -24,29 +24,29 @@ void *routine(void *void_philosopher)
 	return (NULL);
 }
 
-int create_threads(t_table *table)
+int create_threads(t_table *table, t_vars *vars)
 {
     int i;
     pthread_t *threads;
 
-    threads = (pthread_t *)malloc(sizeof(pthread_t) * table->rules.num_of_philo);
+    threads = (pthread_t *)malloc(sizeof(pthread_t) * vars->rules.num_of_philo);
     if (threads == NULL)
         return (0);
-    if (table->rules.num_of_philo == 1)
+    if (vars->rules.num_of_philo == 1)
     {
         print_status(&table->philos[0], "died", 1);
         return (0);
     }
     i = 0;
-    while (i < table->rules.num_of_philo)
+    while (i < vars->rules.num_of_philo)
     {
         if (pthread_create(&threads[i], NULL, &routine, &table->philos[i]) != 0)
             return (0);
         i++;
     }
-    kill_p(table);
+    kill_p(table, vars);
     i = 0;
-    while (i < table->rules.num_of_philo)
+    while (i < vars->rules.num_of_philo)
     {
         if (pthread_join(threads[i], NULL) != 0)
             return (0);
