@@ -41,3 +41,19 @@ re:	fclean all
 
 debug: CFLAGS += -g
 debug: re
+
+.PHONY: test1
+test1:
+	./philo 1 800 200 200
+test2:
+	./philo 5 800 200 200
+test3:
+	./philo 5 800 200 200 7
+	@printf "Num of meals for 1st philo: "
+	@./philo 5 800 200 200 7 | grep "1 is eating" | wc -l
+test4:
+	./philo 4 410 200 200
+test5:
+	./philo 4 310 200 100
+test6:
+	./philo 2 100 200 200
