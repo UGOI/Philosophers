@@ -42,7 +42,6 @@ re:	fclean all
 debug: CFLAGS += -g
 debug: re
 
-.PHONY: test1
 test1:
 	./philo 1 800 200 200
 test2:
@@ -57,3 +56,6 @@ test5:
 	./philo 4 310 200 100
 test6:
 	./philo 2 100 200 200
+test: test1 test2 test3 test4 test5 test6
+.PHONY: test1 test2 test3 test4 test5 test6 test
+

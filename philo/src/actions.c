@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   actions.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/04 18:11:26 by sdukic            #+#    #+#             */
+/*   Updated: 2023/01/04 18:12:17 by sdukic           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include"./include/philo.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-int p_eat(t_philo *philo)
+int	p_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	print_status(philo, "has taken a fork", 0);
@@ -17,28 +29,27 @@ int p_eat(t_philo *philo)
 	(philo->num_of_meals)++;
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
-    return (1);
+	return (1);
 }
 
-int p_sleep(t_philo *philo)
+int	p_sleep(t_philo *philo)
 {
-    print_status(philo, "is sleeping", 0);
-    efficient_sleep(philo);
-    return (1);
+	print_status(philo, "is sleeping", 0);
+	efficient_sleep(philo);
+	return (1);
 }
 
-int p_think(t_philo *philo)
+int	p_think(t_philo *philo)
 {
-    print_status(philo, "is thinking", 0);
-    return (1);
+	print_status(philo, "is thinking", 0);
+	return (1);
 }
 
-int p_die(t_philo *philo)
+int	p_die(t_philo *philo)
 {
-    if (philo->state != DEAD)
-        philo->vars->deaths++;
-    philo->state = DEAD;
-    print_status(philo, "died", 1);
-    
-    return (1);
+	if (philo->state != DEAD)
+		philo->vars->deaths++;
+	philo->state = DEAD;
+	print_status(philo, "died", 1);
+	return (1);
 }
