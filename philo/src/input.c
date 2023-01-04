@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 19:01:31 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/04 19:01:34 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/04 19:37:53 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ int	check_input(int argc, char **argv)
 {
 	if (argc == 5 || argc == 6)
 	{
+		if (argc == 6)
+			if (argv[5][0] == '0')
+				return (0);
 		if (is_all_number(argv) == 1)
 			return (1);
 	}
