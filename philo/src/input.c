@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 19:01:31 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/04 19:37:53 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/05 19:54:12 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ int	is_number(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] >= '0' && str[i] <= '9')
-			return (1);
+		if (!(str[i] >= '0' && str[i] <= '9'))
+			return (0);
 		i++;
 	}
-	return (0);
+	return (1);
 }
 
 int	is_all_number(char **argv)
