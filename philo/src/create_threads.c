@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:18:21 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/04 18:35:42 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/05 19:22:36 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,14 +69,15 @@ int	create_threads(t_table *table, t_vars *vars)
 {
 	pthread_t	*threads;
 
-	threads = (pthread_t *)malloc(sizeof(pthread_t) * vars->rules.num_of_philo);
-	if (threads == NULL)
-		return (0);
 	if (vars->rules.num_of_philo == 1)
 	{
 		print_status(&table->philos[0], "died", 1);
+		free_all(table, vars);
 		return (0);
 	}
+	threads = (pthread_t *)malloc(sizeof(pthread_t) * vars->rules.num_of_philo);
+	if (threads == NULL)
+		return (0);
 	if (create_threads2(threads, vars, table) == 0)
 		return (0);
 	kill_p(table, vars);

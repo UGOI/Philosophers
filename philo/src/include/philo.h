@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:00:51 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/04 18:10:39 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/05 19:22:18 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,5 @@ void	print_status(t_philo *philo, char *status, int override);
 int		p_die(t_philo *philo);
 void	kill_p(t_table *table, t_vars *vars);
 void	efficient_sleep(t_philo *philo);
+void	free_all(t_table *table, t_vars *vars);
 #endif
