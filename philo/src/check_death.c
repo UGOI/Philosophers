@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:14:20 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/04 18:17:13 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/07 21:06:55 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,13 @@ int	are_all_dead(t_table *table, t_vars *vars)
 	i = 0;
 	while (i < vars->rules.num_of_philo)
 	{
+		pthread_mutex_lock(&table->philos[i].state_check);
 		if (table->philos[i].state != DEAD)
 		{
+			pthread_mutex_unlock(&table->philos[i].state_check);
 			return (0);
 		}
+		pthread_mutex_unlock(&table->philos[i].state_check);
 		i++;
 	}
 	return (1);
@@ -49,10 +52,13 @@ int	are_all_full(t_table *table, t_vars *vars)
 	i = 0;
 	while (i < vars->rules.num_of_philo)
 	{
+		pthread_mutex_lock(&table->philos[i].state_check);
 		if (table->philos[i].state != FULL)
 		{
+			pthread_mutex_unlock(&table->philos[i].state_check);
 			return (0);
 		}
+		pthread_mutex_unlock(&table->philos[i].state_check);
 		i++;
 	}
 	return (1);
@@ -67,20 +73,26 @@ void	kill_p(t_table *table, t_vars *vars)
 		i = 0;
 		while (i < vars->rules.num_of_philo)
 		{
-			pthread_mutex_lock(table->philos[i].vars->meal_check);
+			pthread_mutex_lock(&table->philos[i].meal_check);
+			pthread_mutex_lock(&table->philos[i].state_check);
 			if (table->philos[i].state != DEAD)
 			{
+				pthread_mutex_unlock(&table->philos[i].state_check);
 				if (is_pdeath(&table->philos[i]) == 1)
 				{
 					p_die(&table->philos[i]);
 				}
 			}
+			else
+				pthread_mutex_unlock(&table->philos[i].state_check);
 			if (table->philos[i].num_of_meals
 				== table->philos[i].vars->rules.num_of_must_eat)
 			{
+				pthread_mutex_lock(&table->philos[i].state_check);
 				table->philos[i].state = FULL;
+				pthread_mutex_unlock(&table->philos[i].state_check);
 			}
-			pthread_mutex_unlock(table->philos[i].vars->meal_check);
+			pthread_mutex_unlock(&table->philos[i].meal_check);
 			i++;
 		}
 	}

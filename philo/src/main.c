@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 19:08:12 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/05 18:43:05 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/07 19:59:07 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ void	free_all(t_table *table, t_vars *vars)
 	while (i < vars->rules.num_of_philo)
 	{
 		pthread_mutex_destroy(&table->forks[i]);
+		pthread_mutex_destroy(&table->philos[i].meal_check);
+
 		i++;
 	}
-	pthread_mutex_destroy(vars->meal_check);
-	free(vars->meal_check);
 	free(table->forks);
 	free(table->philos);
 	return ;

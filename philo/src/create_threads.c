@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:18:21 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/05 19:22:36 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/07 20:53:09 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,16 @@ void	*routine(void *void_philosopher)
 	philo = (t_philo *)void_philosopher;
 	if (philo->id % 2)
 		usleep(15000);
-	while (!(philo->state == DEAD)
-		&& !(philo->state == FULL) && (philo->vars->deaths == 0))
+	while (1)
 	{
+		pthread_mutex_lock(&philo->state_check);
+		if ((philo->state == DEAD)
+		|| (philo->state == FULL) || (philo->vars->deaths != 0))
+		{
+			pthread_mutex_unlock(&philo->state_check);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->state_check);
 		p_eat(philo);
 		p_sleep(philo);
 		p_think(philo);

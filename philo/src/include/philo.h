@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:00:51 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/05 19:22:18 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/07 20:42:41 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,7 @@
 
 enum	e_state
 {
-	SLEEPING,
 	THINKING,
-	EATING,
-	WAITING,
 	DEAD,
 	FULL
 };
@@ -38,7 +35,8 @@ typedef struct vars
 	int				deaths;
 	long long		start_time;
 	t_rules			rules;
-	pthread_mutex_t	*meal_check;
+	pthread_mutex_t	print;
+	pthread_mutex_t	stop;
 }	t_vars;
 
 typedef struct philo
@@ -47,6 +45,8 @@ typedef struct philo
 	int				id;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	meal_check;
+	pthread_mutex_t	state_check;
 	long long		last_meal;
 	int				num_of_meals;
 	enum e_state	state;

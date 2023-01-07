@@ -1,6 +1,6 @@
 # Compiler settings.
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 LDFLAGS =
 
 # Makefile settings.
@@ -39,7 +39,7 @@ fclean: clean
 .PHONY: re
 re:	fclean all
 
-debug: CFLAGS += -g
+debug: CFLAGS += -g -fsanitize=thread
 debug: re
 
 test1:

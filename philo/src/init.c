@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:36:08 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/04 18:59:56 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/07 20:43:02 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,10 @@ int	init_fork_mutex(t_table *table, t_vars *vars)
 	{
 		if (pthread_mutex_init(&table->forks[i], NULL) != 0)
 			return (0);
+		if (pthread_mutex_init(&table->philos[i].meal_check, NULL) != 0)
+			return (0);
+		if (pthread_mutex_init(&table->philos[i].state_check, NULL) != 0)
+			return (0);
 		i++;
 	}
 	return (1);
@@ -84,11 +88,6 @@ int	init_table(t_table *table, t_vars *vars, int argc, char **argv)
 	if (malloc_table(table, vars) == 0)
 		return (0);
 	if (init_fork_mutex(table, vars) == 0)
-		return (0);
-	vars->meal_check = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t));
-	if (vars->meal_check == NULL)
-		return (0);
-	if (pthread_mutex_init(vars->meal_check, NULL) != 0)
 		return (0);
 	init_philos(table, vars);
 	return (1);
