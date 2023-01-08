@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:14:20 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/07 21:06:55 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/08 22:33:31 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,13 @@ int	are_all_full(t_table *table, t_vars *vars)
 	return (1);
 }
 
+void	kill_one_philo(t_table *table, int i)
+{
+	pthread_mutex_unlock(&table->philos[i].state_check);
+	if (is_pdeath(&table->philos[i]) == 1)
+		p_die(&table->philos[i]);
+}
+
 void	kill_p(t_table *table, t_vars *vars)
 {
 	int	i;
@@ -76,13 +83,7 @@ void	kill_p(t_table *table, t_vars *vars)
 			pthread_mutex_lock(&table->philos[i].meal_check);
 			pthread_mutex_lock(&table->philos[i].state_check);
 			if (table->philos[i].state != DEAD)
-			{
-				pthread_mutex_unlock(&table->philos[i].state_check);
-				if (is_pdeath(&table->philos[i]) == 1)
-				{
-					p_die(&table->philos[i]);
-				}
-			}
+				kill_one_philo(table, i);
 			else
 				pthread_mutex_unlock(&table->philos[i].state_check);
 			if (table->philos[i].num_of_meals
