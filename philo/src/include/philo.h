@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:00:51 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/07 20:42:41 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/08 22:38:17 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ typedef struct vars
 	int				deaths;
 	long long		start_time;
 	t_rules			rules;
-	pthread_mutex_t	print;
-	pthread_mutex_t	stop;
 }	t_vars;
 
 typedef struct philo
