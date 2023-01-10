@@ -25,6 +25,7 @@ void	free_all(t_table *table, t_vars *vars)
 		pthread_mutex_destroy(&table->philos[i].meal_check);
 		i++;
 	}
+	pthread_mutex_destroy(&vars->print);
 	free(table->forks);
 	free(table->philos);
 	return ;

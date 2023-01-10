@@ -28,16 +28,23 @@ void	print_status(t_philo *philo, char *status, int override)
 {
 	int	time;
 
+	pthread_mutex_lock(&philo->vars->print);
 	pthread_mutex_lock(&philo->state_check);
-	if ((philo->state != DEAD || override == 1) && philo->vars->deaths <= 1)
+	pthread_mutex_lock(&philo->vars->exit_m);
+	if (((philo->state != DEAD && philo->vars->exit == 0) || override == 1))
 	{
+		pthread_mutex_unlock(&philo->vars->exit_m);
 		pthread_mutex_unlock(&philo->state_check);
 		time = get_time();
 		printf("%lld %d %s\n", time - philo->vars->start_time,
 			philo->id, status);
 	}
 	else
+	{
+		pthread_mutex_unlock(&philo->vars->exit_m);
 		pthread_mutex_unlock(&philo->state_check);
+	}
+	pthread_mutex_unlock(&philo->vars->print);
 }
 
 void	efficient_sleep(t_philo *philo)

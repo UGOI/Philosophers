@@ -23,11 +23,13 @@ void	init_vars(t_vars *vars, int argc, char **argv)
 	vars->rules.time_to_die = ft_atoi(argv[2]);
 	vars->rules.time_to_eat = ft_atoi(argv[3]);
 	vars->rules.time_to_sleep = ft_atoi(argv[4]);
-	vars->deaths = 0;
+	vars->exit = 0;
 	if (argc == 6)
 		vars->rules.num_of_must_eat = ft_atoi(argv[5]);
 	else
 		vars->rules.num_of_must_eat = -1;
+	pthread_mutex_init(&vars->print, NULL);
+	pthread_mutex_init(&vars->exit_m, NULL);
 }
 
 int	malloc_table(t_table *table, t_vars *vars)

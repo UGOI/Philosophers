@@ -1,6 +1,6 @@
 # Compiler settings.
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=thread
 LDFLAGS =
 
 # Makefile settings.

@@ -26,25 +26,6 @@ int	is_pdeath(t_philo *philo)
 	return (0);
 }
 
-int	are_all_dead(t_table *table, t_vars *vars)
-{
-	int	i;
-
-	i = 0;
-	while (i < vars->rules.num_of_philo)
-	{
-		pthread_mutex_lock(&table->philos[i].state_check);
-		if (table->philos[i].state != DEAD)
-		{
-			pthread_mutex_unlock(&table->philos[i].state_check);
-			return (0);
-		}
-		pthread_mutex_unlock(&table->philos[i].state_check);
-		i++;
-	}
-	return (1);
-}
-
 int	are_all_full(t_table *table, t_vars *vars)
 {
 	int	i;
@@ -75,17 +56,31 @@ void	kill_p(t_table *table, t_vars *vars)
 {
 	int	i;
 
-	while (are_all_dead(table, vars) == 0 && are_all_full(table, vars) == 0)
+	while (are_all_full(table, vars) == 0)
 	{
+		pthread_mutex_lock(&vars->exit_m);
+		if (vars->exit != 0)
+		{
+			pthread_mutex_unlock(&vars->exit_m);
+			return ;
+		}
+		pthread_mutex_unlock(&vars->exit_m);
 		i = 0;
 		while (i < vars->rules.num_of_philo)
 		{
 			pthread_mutex_lock(&table->philos[i].meal_check);
 			pthread_mutex_lock(&table->philos[i].state_check);
-			if (table->philos[i].state != DEAD)
+			pthread_mutex_lock(&vars->exit_m);
+			if (table->philos[i].vars->exit == 0)
+			{
+				pthread_mutex_unlock(&vars->exit_m);
 				kill_one_philo(table, i);
+			}
 			else
+			{
+				pthread_mutex_unlock(&vars->exit_m);
 				pthread_mutex_unlock(&table->philos[i].state_check);
+			}
 			if (table->philos[i].num_of_meals
 				== table->philos[i].vars->rules.num_of_must_eat)
 			{

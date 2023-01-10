@@ -51,7 +51,11 @@ int	p_die(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->state_check);
 	if (philo->state != DEAD)
-		philo->vars->deaths++;
+	{
+		pthread_mutex_lock(&philo->vars->exit_m);
+		philo->vars->exit = 1;
+		pthread_mutex_unlock(&philo->vars->exit_m);
+	}
 	philo->state = DEAD;
 	pthread_mutex_unlock(&philo->state_check);
 	print_status(philo, "died", 1);

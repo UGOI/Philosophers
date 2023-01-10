@@ -32,9 +32,11 @@ typedef struct rules
 
 typedef struct vars
 {
-	int				deaths;
+	int				exit;
 	long long		start_time;
 	t_rules			rules;
+	pthread_mutex_t print;
+	pthread_mutex_t	exit_m;
 }	t_vars;
 
 typedef struct philo

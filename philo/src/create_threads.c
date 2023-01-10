@@ -29,12 +29,15 @@ void	*routine(void *void_philosopher)
 	while (1)
 	{
 		pthread_mutex_lock(&philo->state_check);
+		pthread_mutex_lock(&philo->vars->exit_m);
 		if ((philo->state == DEAD)
-			|| (philo->state == FULL) || (philo->vars->deaths != 0))
+			|| (philo->state == FULL) || (philo->vars->exit != 0))
 		{
+			pthread_mutex_unlock(&philo->vars->exit_m);
 			pthread_mutex_unlock(&philo->state_check);
 			break ;
 		}
+		pthread_mutex_unlock(&philo->vars->exit_m);
 		pthread_mutex_unlock(&philo->state_check);
 		p_eat(philo);
 		p_sleep(philo);
