@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:14:20 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/08 22:33:31 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/10 23:01:31 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,20 @@ int	are_all_full(t_table *table, t_vars *vars)
 
 void	kill_one_philo(t_table *table, int i)
 {
-	pthread_mutex_unlock(&table->philos[i].state_check);
 	if (is_pdeath(&table->philos[i]) == 1)
 		p_die(&table->philos[i]);
+}
+
+int	should_exit(t_vars *vars)
+{
+	pthread_mutex_lock(&vars->exit_m);
+	if (vars->exit != 0)
+	{
+		pthread_mutex_unlock(&vars->exit_m);
+		return (1);
+	}
+	pthread_mutex_unlock(&vars->exit_m);
+	return (0);
 }
 
 void	kill_p(t_table *table, t_vars *vars)
@@ -61,28 +72,13 @@ void	kill_p(t_table *table, t_vars *vars)
 
 	while (are_all_full(table, vars) == 0)
 	{
-		pthread_mutex_lock(&vars->exit_m);
-		if (vars->exit != 0)
-		{
-			pthread_mutex_unlock(&vars->exit_m);
+		if (should_exit(vars) == 1)
 			return ;
-		}
-		pthread_mutex_unlock(&vars->exit_m);
 		i = 0;
 		while (i < vars->rules.num_of_philo)
 		{
-			pthread_mutex_lock(&table->philos[i].state_check);
-			pthread_mutex_lock(&vars->exit_m);
-			if (table->philos[i].vars->exit == 0)
-			{
-				pthread_mutex_unlock(&vars->exit_m);
+			if (should_exit(vars) == 0)
 				kill_one_philo(table, i);
-			}
-			else
-			{
-				pthread_mutex_unlock(&vars->exit_m);
-				pthread_mutex_unlock(&table->philos[i].state_check);
-			}
 			pthread_mutex_lock(&table->philos[i].meal_check);
 			if (table->philos[i].num_of_meals
 				== table->philos[i].vars->rules.num_of_must_eat)

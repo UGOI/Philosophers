@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:00:51 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/08 22:38:17 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/10 22:22:35 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct vars
 	int				exit;
 	long long		start_time;
 	t_rules			rules;
-	pthread_mutex_t print;
+	pthread_mutex_t	print;
 	pthread_mutex_t	exit_m;
 }	t_vars;
 

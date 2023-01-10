@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 19:10:55 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/07 20:54:25 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/10 22:43:45 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	print_status(t_philo *philo, char *status, int override)
 	pthread_mutex_lock(&philo->vars->print);
 	pthread_mutex_lock(&philo->state_check);
 	pthread_mutex_lock(&philo->vars->exit_m);
-	if (((philo->state != DEAD && philo->vars->exit == 0) || override == 1))
+	if (((philo->state != DEAD
+				&& philo->vars->exit == 0) || override == 1))
 	{
 		pthread_mutex_unlock(&philo->vars->exit_m);
 		pthread_mutex_unlock(&philo->state_check);

@@ -6,7 +6,7 @@
 /*   By: sdukic <sdukic@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:18:21 by sdukic            #+#    #+#             */
-/*   Updated: 2023/01/08 22:27:18 by sdukic           ###   ########.fr       */
+/*   Updated: 2023/01/10 23:15:40 by sdukic           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,22 @@
 #include<unistd.h>
 #include<sys/time.h>
 #include"./include/philo.h"
+
+int	can_break(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->state_check);
+	pthread_mutex_lock(&philo->vars->exit_m);
+	if ((philo->state == DEAD)
+		|| (philo->state == FULL) || (philo->vars->exit != 0))
+	{
+		pthread_mutex_unlock(&philo->vars->exit_m);
+		pthread_mutex_unlock(&philo->state_check);
+		return (1);
+	}
+	pthread_mutex_unlock(&philo->vars->exit_m);
+	pthread_mutex_unlock(&philo->state_check);
+	return (0);
+}
 
 void	*routine(void *void_philosopher)
 {
@@ -28,17 +44,8 @@ void	*routine(void *void_philosopher)
 		usleep(15000);
 	while (1)
 	{
-		pthread_mutex_lock(&philo->state_check);
-		pthread_mutex_lock(&philo->vars->exit_m);
-		if ((philo->state == DEAD)
-			|| (philo->state == FULL) || (philo->vars->exit != 0))
-		{
-			pthread_mutex_unlock(&philo->vars->exit_m);
-			pthread_mutex_unlock(&philo->state_check);
+		if (can_break(philo))
 			break ;
-		}
-		pthread_mutex_unlock(&philo->vars->exit_m);
-		pthread_mutex_unlock(&philo->state_check);
 		p_eat(philo);
 		p_sleep(philo);
 		p_think(philo);
