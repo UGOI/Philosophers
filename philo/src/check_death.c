@@ -19,10 +19,13 @@ int	is_pdeath(t_philo *philo)
 	int	time;
 
 	time = get_time();
+	pthread_mutex_lock(&philo->meal_check);
 	if (time - philo->last_meal > philo->vars->rules.time_to_die)
 	{
+		pthread_mutex_unlock(&philo->meal_check);
 		return (1);
 	}
+	pthread_mutex_unlock(&philo->meal_check);
 	return (0);
 }
 
@@ -68,7 +71,6 @@ void	kill_p(t_table *table, t_vars *vars)
 		i = 0;
 		while (i < vars->rules.num_of_philo)
 		{
-			pthread_mutex_lock(&table->philos[i].meal_check);
 			pthread_mutex_lock(&table->philos[i].state_check);
 			pthread_mutex_lock(&vars->exit_m);
 			if (table->philos[i].vars->exit == 0)
@@ -81,6 +83,7 @@ void	kill_p(t_table *table, t_vars *vars)
 				pthread_mutex_unlock(&vars->exit_m);
 				pthread_mutex_unlock(&table->philos[i].state_check);
 			}
+			pthread_mutex_lock(&table->philos[i].meal_check);
 			if (table->philos[i].num_of_meals
 				== table->philos[i].vars->rules.num_of_must_eat)
 			{
